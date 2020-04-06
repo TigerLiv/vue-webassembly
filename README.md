@@ -1,4 +1,5 @@
 # hello-world
+得先安装emcc 将c文件编译为wasm
 
 ## Project setup
 ```

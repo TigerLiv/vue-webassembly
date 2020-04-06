@@ -20,10 +20,9 @@ export default {
   },
   methods: {
     async doSomething() {
-      const fibonacciUrl = './fibonacci.wasm';
-      const { _fibonacci } = await this.getExportFunction(fibonacciUrl);
-
-      this.cFibonacci = this.getDuring(_fibonacci),
+      const fibonacciUrl = './f.wasm';
+      const { fibonacci } = await this.getExportFunction(fibonacciUrl);
+      this.cFibonacci = this.getDuring(fibonacci),
       this.jsFibonacci = this.getDuring(this.fibonacci);
     },
     getDuring(func) {
@@ -50,25 +49,26 @@ export default {
         }),
       };
       const instance = await fetch(url).then((response) => response.arrayBuffer()).then((bytes) => WebAssembly.instantiate(bytes, { env })).then((instance) => instance.instance.exports);
+      console.log(instance,'ss')
       return instance;
     },
   },
   mounted() {
-    // wasmC({
-    //   global: {},
-    //   env: {
-    //     memoryBase: 0,
-    //     tableBase: 0,
-    //     memory: new WebAssembly.Memory({ initial: 256 }),
-    //     table: new WebAssembly.Table({ initial: 0, element: 'anyfunc' }),
-    //   },
-    // }).then(() => {
-    // const { exports } = result.instance;
-    // const add = exports._add;
-    // const fibonacci = exports._fibonacci;
-    // console.log('C return value was', add(2, 3));
-    // console.log('Fibonacci', fibonacci(2));
-    // });
+    wasmC({
+      global: {},
+      env: {
+        memoryBase: 0,
+        tableBase: 0,
+        memory: new WebAssembly.Memory({ initial: 256 }),
+        table: new WebAssembly.Table({ initial: 0, element: 'anyfunc' }),
+      },
+    }).then((result) => {
+    const { exports } = result.instance;
+    const add = exports.add;
+    const fibonacci = exports.fibonacci;
+    console.log('C return value was', add(2, 3));
+    console.log('Fibonacci', fibonacci(2));
+    });
     this.doSomething();
   },
   components: {
