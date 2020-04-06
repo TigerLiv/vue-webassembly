@@ -1,6 +1,7 @@
 # hello-world
 得先安装emcc 将c文件编译为wasm
 
+参考https://www.ibm.com/developerworks/cn/web/wa-lo-webassembly-status-and-reality/index.html
 ## Project setup
 ```
 npm install
